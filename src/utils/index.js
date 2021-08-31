@@ -21,10 +21,11 @@ import { namehash } from './namehash'
 
 const uniq = (a, param) =>
   a.filter(
-    (item, pos) => a.map(mapItem => mapItem[param]).indexOf(item[param]) === pos
+    (item, pos) =>
+      a.map((mapItem) => mapItem[param]).indexOf(item[param]) === pos
   )
 
-const checkLabels = (...labelHashes) => labelHashes.map(hash => null)
+const checkLabels = (...labelHashes) => labelHashes.map((hash) => null)
 
 async function getEtherScanAddr() {
   const networkId = await getNetworkId()
@@ -65,12 +66,12 @@ const mergeLabels = (labels1, labels2) =>
 
 function validateName(name) {
   const nameArray = name.split('.')
-  const hasEmptyLabels = nameArray.filter(e => e.length < 1).length > 0
+  const hasEmptyLabels = nameArray.filter((e) => e.length < 1).length > 0
   if (hasEmptyLabels) throw new Error('Domain cannot have empty labels')
-  const normalizedArray = nameArray.map(label => {
-    if(label === '[root]'){
+  const normalizedArray = nameArray.map((label) => {
+    if (label === '[root]') {
       return label
-    }else{
+    } else {
       return isEncodedLabelhash(label) ? label : normalize(label)
     }
   })
@@ -106,7 +107,7 @@ const parseSearchTerm = (term, validTld) => {
     const termArray = term.split('.')
     const tld = term.match(regex) ? term.match(regex)[0] : ''
     if (validTld) {
-      if (tld === 'one' && termArray[termArray.length - 2].length < 3) {
+      if (tld === 'ftm' && termArray[termArray.length - 2].length < 3) {
         return 'short'
       }
       return 'supported'

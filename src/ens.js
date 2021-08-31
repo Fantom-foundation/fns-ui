@@ -323,24 +323,27 @@ export class ENS {
       topics: [namehash],
       fromBlock: startBlock
     })
-    const flattenedLogs = rawLogs.map(log => log.values)
+    const flattenedLogs = rawLogs.map((log) => log.values)
     flattenedLogs.reverse()
     const logs = uniq(flattenedLogs, 'label')
-    const labelhashes = logs.map(log => log.label)
+    const labelhashes = logs.map((log) => log.label)
     const remoteLabels = await decryptHashes(...labelhashes)
     const localLabels = checkLabels(...labelhashes)
     const labels = mergeLabels(localLabels, remoteLabels)
-    const ownerPromises = labels.map(label => this.getOwner(`${label}.${name}`))
+    const ownerPromises = labels.map((label) =>
+      this.getOwner(`${label}.${name}`)
+    )
 
-    return Promise.all(ownerPromises).then(owners =>
+    return Promise.all(ownerPromises).then((owners) =>
       owners.map((owner, index) => {
         return {
           label: labels[index],
           labelhash: logs[index].label,
           decrypted: labels[index] !== null,
           node: name,
-          name: `${labels[index] ||
-            encodeLabelhash(logs[index].label)}.${name}`,
+          name: `${
+            labels[index] || encodeLabelhash(logs[index].label)
+          }.${name}`,
           owner
         }
       })
@@ -526,7 +529,7 @@ export class ENS {
 
   async createSubdomain(name) {
     const account = await getAccount()
-    const publicResolverAddress = await this.getAddress('resolver.one')
+    const publicResolverAddress = await this.getAddress('resolver')
     try {
       return this.setSubnodeRecord(name, account, publicResolverAddress)
     } catch (e) {
@@ -596,7 +599,7 @@ export class ENS {
 
     const logs = await provider.getLogs(filter)
 
-    const parsed = logs.map(log => {
+    const parsed = logs.map((log) => {
       const parsedLog = ensInterface.parseLog(log)
       return parsedLog
     })
