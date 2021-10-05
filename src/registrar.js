@@ -332,7 +332,7 @@ export default class Registrar {
       signer
     )
     const account = await getAccount()
-    const resolverAddr = await this.getAddress('resolver')
+    const resolverAddr = await this.getAddress('resolver.ftm')
     if (parseInt(resolverAddr, 16) === 0) {
       return permanentRegistrarController.makeCommitment(name, owner, secret)
     } else {
@@ -384,7 +384,7 @@ export default class Registrar {
     const account = await getAccount()
     const price = await this.getRentPrice(label, duration)
     const priceWithBuffer = getBufferedPrice(price)
-    const resolverAddr = await this.getAddress('resolver')
+    const resolverAddr = await this.getAddress('resolver.ftm')
     if (parseInt(resolverAddr, 16) === 0) {
       return permanentRegistrarController.register(
         label,
@@ -579,7 +579,7 @@ export default class Registrar {
 
 async function getEthResolver(ENS) {
   // console.log("Resolver (Owner) address: ", await ENS.owner(namehash('resolver')))
-  const resolverAddr = await ENS.resolver(namehash('resolver'))
+  const resolverAddr = await ENS.resolver(namehash('resolver.ftm'))
   console.log("ResolverAddress: ", resolverAddr)
   const provider = await getProvider()
   return getResolverContract({ address: resolverAddr, provider })
