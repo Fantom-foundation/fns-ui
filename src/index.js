@@ -19,10 +19,9 @@ export async function setupENS({
     infura
   })
 
-  const networkId = await getNetworkId()
-  const ens = new ENS({ provider, networkId, registryAddress: ensAddress })
-  const registrar = await setupRegistrar(ens.registryAddress)
   const network = await getNetwork()
+  const ens = new ENS({ provider, networkId: network.chainId, registryAddress: ensAddress })
+  const registrar = await setupRegistrar(ens.registryAddress)
   return { ens, registrar, provider:customProvider, network }
 }
 
