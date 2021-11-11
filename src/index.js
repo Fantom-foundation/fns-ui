@@ -1,11 +1,11 @@
 import { getProvider, setupWeb3, getNetworkId, getNetwork } from './web3'
-import { ENS } from './ens.js'
+import { FNS } from './fns.js'
 import { setupRegistrar } from './registrar'
 export { utils, ethers } from 'ethers'
 
-export async function setupENS({
+export async function setupFNS({
   customProvider,
-  ensAddress,
+  fnsAddress,
   reloadOnAccountsChange,
   enforceReadOnly,
   enforceReload,
@@ -20,12 +20,12 @@ export async function setupENS({
   })
 
   const network = await getNetwork()
-  const ens = new ENS({ provider, networkId: network.chainId, registryAddress: ensAddress })
-  const registrar = await setupRegistrar(ens.registryAddress)
-  return { ens, registrar, provider:customProvider, network }
+  const fns = new FNS({ provider, networkId: network.chainId, registryAddress: fnsAddress })
+  const registrar = await setupRegistrar(fns.registryAddress)
+  return { fns, registrar, provider:customProvider, network }
 }
 
-export * from './ens'
+export * from './fns'
 export * from './registrar'
 export * from './web3'
 export * from './constants/interfaces'

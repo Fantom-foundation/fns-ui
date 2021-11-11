@@ -1,7 +1,7 @@
 
 import DNSRegistrarJS from './dnsregistrar'
 import {
-  getENSContract,
+  getFNSContract,
   getResolverContract,
   getPermanentRegistrarContract,
   getDnsRegistrarContract,
@@ -95,20 +95,20 @@ export default class Registrar {
       provider
     })
 
-    const ENS = getENSContract({ address: registryAddress, provider })
+    const FNS = getFNSContract({ address: registryAddress, provider })
 
     this.permanentRegistrar = permanentRegistrar
     this.permanentRegistrarController = permanentRegistrarController
     // this.legacyAuctionRegistrar = legacyAuctionRegistrar
     this.registryAddress = registryAddress
     this.bulkRenewal = bulkRenewal
-    this.ENS = ENS
+    this.FNS = FNS
   }
 
   async getAddress(name) {
     const provider = await getProvider()
     const hash = namehash(name)
-    const resolverAddr = await this.ENS.resolver(hash)
+    const resolverAddr = await this.FNS.resolver(hash)
     const Resolver = getResolverContract({ address: resolverAddr, provider })
     return Resolver['addr(bytes32)'](hash)
   }
@@ -512,7 +512,7 @@ export default class Registrar {
             // DNS entry does not exist
             dnsRegistrar.state = 1
           } else if (result.results.length === 6) {
-            // DNS entry exists but _ens subdomain does not exist
+            // DNS entry exists but _fns subdomain does not exist
             dnsRegistrar.state = 3
           } else {
             throw `DNSSEC results cannot be ${result.results.length}`
@@ -550,7 +550,7 @@ export default class Registrar {
 
   async registerTestdomain(label) {
     const provider = await getProvider()
-    const testAddress = await this.ENS.owner(namehash('test'))
+    const testAddress = await this.FNS.owner(namehash('test'))
     const registrarWithoutSigner = getTestRegistrarContract({
       address: testAddress,
       provider
@@ -564,7 +564,7 @@ export default class Registrar {
 
   async expiryTimes(label) {
     const provider = await getProvider()
-    const testAddress = await this.ENS.owner(namehash('test'))
+    const testAddress = await this.FNS.owner(namehash('test'))
     const TestRegistrar = await getTestRegistrarContract({
       address: testAddress,
       provider
@@ -577,9 +577,9 @@ export default class Registrar {
   }
 }
 
-async function getEthResolver(ENS) {
-  // console.log("Resolver (Owner) address: ", await ENS.owner(namehash('resolver')))
-  const resolverAddr = await ENS.resolver(namehash('resolver.ftm'))
+async function getEthResolver(FNS) {
+  // console.log("Resolver (Owner) address: ", await FNS.owner(namehash('resolver')))
+  const resolverAddr = await FNS.resolver(namehash('resolver.ftm'))
   console.log("ResolverAddress: ", resolverAddr)
   const provider = await getProvider()
   return getResolverContract({ address: resolverAddr, provider })
@@ -587,10 +587,10 @@ async function getEthResolver(ENS) {
 
 export async function setupRegistrar(registryAddress) {
   const provider = await getProvider()
-  const ENS = getENSContract({ address: registryAddress, provider })
-  const Resolver = await getEthResolver(ENS)
+  const FNS = getFNSContract({ address: registryAddress, provider })
+  const Resolver = await getEthResolver(FNS)
 
-  let ethAddress = await ENS.owner(namehash('ftm'))
+  let ethAddress = await FNS.owner(namehash('ftm'))
 
   console.log("EthAddress: ", ethAddress)
 
@@ -608,7 +608,7 @@ export async function setupRegistrar(registryAddress) {
   //   legacyRegistrarInterfaceId
   // )
 
-  let bulkRenewalAddress = await ENS.owner(namehash('bulk'))
+  let bulkRenewalAddress = await FNS.owner(namehash('bulk'))
 
   console.log("bulk: ", bulkRenewalAddress)
 

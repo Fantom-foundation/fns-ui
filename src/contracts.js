@@ -1,5 +1,5 @@
 import { Contract } from 'ethers'
-import { abi as ensContract } from '@ensdomains/contracts/abis/ens/ENS.json'
+import { abi as fnsContract } from '@ensdomains/contracts/abis/ens/ENS.json'
 import { abi as reverseRegistrarContract } from '@ensdomains/contracts/abis/ens/ReverseRegistrar.json'
 import { abi as oldResolverContract } from '@ensdomains/contracts/abis/ens-022/PublicResolver.json'
 import { abi as resolverContract } from '@ensdomains/contracts/abis/resolver/Resolver.json'
@@ -23,8 +23,8 @@ function getOldResolverContract({ address, provider }) {
   return new Contract(address, oldResolverContract, provider)
 }
 
-function getENSContract({ address, provider }) {
-  return new Contract(address, ensContract, provider)
+function getFNSContract({ address, provider }) {
+  return new Contract(address, fnsContract, provider)
 }
 
 function getTestRegistrarContract({ address, provider }) {
@@ -58,7 +58,7 @@ function getBulkRenewalContract({ address, provider }) {
 export {
   getTestRegistrarContract,
   getReverseRegistrarContract,
-  getENSContract,
+  getFNSContract,
   getResolverContract,
   getOldResolverContract,
   getDnsRegistrarContract,

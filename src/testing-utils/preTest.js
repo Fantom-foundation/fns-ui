@@ -18,7 +18,7 @@ async function setupWeb3(customProvider) {
   }
 }
 
-export async function mockENS() {
+export async function mockFNS() {
   const ENV = process.argv[2]
 
   switch (ENV) {
@@ -40,16 +40,16 @@ export async function mockENS() {
 
   const addresses = await deployTestEns({ web3, accounts })
   const {
-    ensAddress,
+    fnsAddress,
     controllerAddress,
     legacyAuctionRegistrarAddress
   } = addresses
 
   fs.writeFileSync('./cypress.env.json', JSON.stringify(addresses))
-  fs.writeFile('./.env.local', `REACT_APP_ENS_ADDRESS=${ensAddress}`, err => {
+  fs.writeFile('./.env.local', `REACT_APP_FNS_ADDRESS=${fnsAddress}`, err => {
     if (err) throw err
-    console.log(`Successfully wrote ENS address ${ensAddress} to .env.local`)
+    console.log(`Successfully wrote FNS address ${fnsAddress} to .env.local`)
   })
 }
 
-mockENS()
+mockFNS()

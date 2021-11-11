@@ -44,13 +44,13 @@ class DNSRegistrar {
   }
   /**
    * returns a claim object which allows you to claim
-   * the ownership of a given name on ENS by submitting the proof
+   * the ownership of a given name on FNS by submitting the proof
    * into DNSSEC oracle as well as claiming the name via the registrar
    * @param {string} name - name of the domain you want to claim
    */
   async claim(name) {
     let encodedName = '0x' + packet.name.encode(name).toString('hex');
-    let textDomain = '_ens.' + name;
+    let textDomain = '_fns.' + name;
     let result = await this.dnsprover.lookup('TXT', textDomain);
     let oracle = await this.dnsprover.getOracle(this.oracleAddress);
     return new Claim({

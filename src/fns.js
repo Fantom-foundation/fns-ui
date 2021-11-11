@@ -9,7 +9,7 @@ import {
 } from './web3'
 import { normalize } from 'eth-ens-namehash'
 import { formatsByName } from '@ensdomains/address-encoder'
-import { abi as ensContract } from '@ensdomains/contracts/abis/ens/ENS.json'
+import { abi as fnsContract } from '@ensdomains/contracts/abis/ens/ENS.json'
 
 import { decryptHashes } from './preimage'
 
@@ -28,7 +28,7 @@ import { encodeLabelhash } from './utils/labelhash'
 import {
   getTestRegistrarContract,
   getReverseRegistrarContract,
-  getENSContract,
+  getFNSContract,
   getResolverContract,
   getOldResolverContract
 } from './contracts'
@@ -78,7 +78,7 @@ const contracts = {
   }
 }
 
-export class ENS {
+export class FNS {
   constructor({ networkId, registryAddress, provider }) {
     this.contracts = contracts
     const hasRegistry = has(this.contracts[networkId], 'registry')
@@ -91,41 +91,41 @@ export class ENS {
 
     this.registryAddress = registryAddress
 
-    const ENSContract = getENSContract({ address: registryAddress, provider })
-    this.ENS = ENSContract
+    const FNSContract = getFNSContract({ address: registryAddress, provider })
+    this.FNS = FNSContract
   }
 
   /* Get the raw Ethers contract object */
-  getENSContractInstance() {
-    return this.ENS
+  getFNSContractInstance() {
+    return this.FNS
   }
 
   /* Main methods */
 
   async getOwner(name) {
     const namehash = getNamehash(name)
-    const owner = await this.ENS.owner(namehash)
+    const owner = await this.FNS.owner(namehash)
     return owner
   }
 
   async getResolver(name) {
     const namehash = getNamehash(name)
-    return this.ENS.resolver(namehash)
+    return this.FNS.resolver(namehash)
   }
 
   async getTTL(name) {
     const namehash = getNamehash(name)
-    return this.ENS.ttl(namehash)
+    return this.FNS.ttl(namehash)
   }
 
   async getResolverWithLabelhash(labelhash, nodehash) {
     const namehash = await getNamehashWithLabelHash(labelhash, nodehash)
-    return this.ENS.resolver(namehash)
+    return this.FNS.resolver(namehash)
   }
 
   async getOwnerWithLabelHash(labelhash, nodeHash) {
     const namehash = await getNamehashWithLabelHash(labelhash, nodeHash)
-    return this.ENS.owner(namehash)
+    return this.FNS.owner(namehash)
   }
 
   async getEthAddressWithResolver(name, resolverAddr) {
@@ -292,7 +292,7 @@ export class ENS {
 
   async isMigrated(name) {
     const namehash = getNamehash(name)
-    return this.ENS.recordExists(namehash)
+    return this.FNS.recordExists(namehash)
   }
 
   async getResolverDetails(node) {
@@ -319,7 +319,7 @@ export class ENS {
   async getSubdomains(name) {
     const startBlock = await getEnsStartBlock()
     const namehash = getNamehash(name)
-    const rawLogs = await this.getENSEvent('NewOwner', {
+    const rawLogs = await this.getFNSEvent('NewOwner', {
       topics: [namehash],
       fromBlock: startBlock
     })
@@ -380,36 +380,36 @@ export class ENS {
   /* non-constant functions */
 
   async setOwner(name, newOwner) {
-    const ENSWithoutSigner = this.ENS
+    const FNSWithoutSigner = this.FNS
     const signer = await getSigner()
-    const ENS = ENSWithoutSigner.connect(signer)
+    const FNS = FNSWithoutSigner.connect(signer)
     const namehash = getNamehash(name)
-    return ENS.setOwner(namehash, newOwner)
+    return FNS.setOwner(namehash, newOwner)
   }
 
   async setSubnodeOwner(name, newOwner) {
-    const ENSWithoutSigner = this.ENS
+    const FNSWithoutSigner = this.FNS
     const signer = await getSigner()
-    const ENS = ENSWithoutSigner.connect(signer)
+    const FNS = FNSWithoutSigner.connect(signer)
     const nameArray = name.split('.')
     const label = nameArray[0]
     const node = nameArray.slice(1).join('.')
     const labelhash = getLabelhash(label)
     const parentNamehash = getNamehash(node)
-    return ENS.setSubnodeOwner(parentNamehash, labelhash, newOwner)
+    return FNS.setSubnodeOwner(parentNamehash, labelhash, newOwner)
   }
 
   async setSubnodeRecord(name, newOwner, resolver) {
-    const ENSWithoutSigner = this.ENS
+    const FNSWithoutSigner = this.FNS
     const signer = await getSigner()
-    const ENS = ENSWithoutSigner.connect(signer)
+    const FNS = FNSWithoutSigner.connect(signer)
     const nameArray = name.split('.')
     const label = nameArray[0]
     const node = nameArray.slice(1).join('.')
     const labelhash = getLabelhash(label)
     const parentNamehash = getNamehash(node)
     const ttl = await this.getTTL(name)
-    return ENS.setSubnodeRecord(
+    return FNS.setSubnodeRecord(
       parentNamehash,
       labelhash,
       newOwner,
@@ -420,10 +420,10 @@ export class ENS {
 
   async setResolver(name, resolver) {
     const namehash = getNamehash(name)
-    const ENSWithoutSigner = this.ENS
+    const FNSWithoutSigner = this.FNS
     const signer = await getSigner()
-    const ENS = ENSWithoutSigner.connect(signer)
-    return ENS.setResolver(namehash, resolver)
+    const FNS = FNSWithoutSigner.connect(signer)
+    return FNS.setResolver(namehash, resolver)
   }
 
   async setAddress(name, address) {
@@ -583,11 +583,11 @@ export class ENS {
 
   // Events
 
-  async getENSEvent(event, { topics, fromBlock }) {
+  async getFNSEvent(event, { topics, fromBlock }) {
     const provider = await getWeb3()
-    const { ENS } = this
-    const ensInterface = new utils.Interface(ensContract)
-    let Event = ENS.filters[event]()
+    const { FNS } = this
+    const fnsInterface = new utils.Interface(fnsContract)
+    let Event = FNS.filters[event]()
 
     const filter = {
       fromBlock,
@@ -599,7 +599,7 @@ export class ENS {
     const logs = await provider.getLogs(filter)
 
     const parsed = logs.map((log) => {
-      const parsedLog = ensInterface.parseLog(log)
+      const parsedLog = fnsInterface.parseLog(log)
       return parsedLog
     })
 
