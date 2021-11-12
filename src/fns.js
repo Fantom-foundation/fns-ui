@@ -7,7 +7,6 @@ import {
   getAccount,
   getSigner
 } from './web3'
-import { normalize } from 'eth-ens-namehash'
 import { formatsByName } from '@ensdomains/address-encoder'
 import { abi as fnsContract } from '@ensdomains/contracts/abis/ens/ENS.json'
 
@@ -68,7 +67,7 @@ const contracts = {
   //   registry: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'
   // },
   4002: {
-    registry: '0x6F81aaA12a4aB00026Ebc69cC4D7d41Bf3B1aE39'
+    registry: '0x7ab9cf80efb603938Ed723202c5Cbf80DD653217'
   },
   1666700000: {
     registry: '0x23ca23b6f2C40BF71fe4Da7C5d6396EE2C018e6A'
