@@ -429,10 +429,10 @@ export default class Registrar {
     )
     const price = await this.getRentPrice(label, duration)
     const priceWithBuffer = getBufferedPrice(price)
-    const gasLimit = await this.estimateGasLimit(() => {
-      return permanentRegistrarController.estimate.renew(label, duration, { value:priceWithBuffer})
-    })
-    return permanentRegistrarController.renew(label, duration, { value: priceWithBuffer, gasLimit: 6721900, gasPrice: 1000000000 })
+    // const gasLimit = await this.estimateGasLimit(() => {
+    //   return permanentRegistrarController.estimate.renew(label, duration, { value:priceWithBuffer})
+    // })
+    return permanentRegistrarController.renew(label, duration, { value: priceWithBuffer, gasLimit: 6721900})
   }
 
   async renewAll(labels, duration) {
