@@ -1,6 +1,6 @@
 {
-  "name": "@fnsdomains/ui",
-  "version": "3.0.72",
+  "name": "fns-ui",
+  "version": "1.0.0",
   "description": "UI components and reusable code",
   "main": "src/index.js",
   "files": [
