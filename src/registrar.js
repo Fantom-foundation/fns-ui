@@ -250,24 +250,7 @@ export default class Registrar {
       const nameArray = name.split('.')
       const labelHash = labelhash(nameArray[0])
       const account = await getAccount()
-      const permanentRegistrar = this.permanentRegistrar
-      const signer = await getSigner()
-      const Registrar = permanentRegistrar.connect(signer)
-      const networkId = await getNetworkId()
-      // if (parseInt(networkId) > 1000) {
-      //   /* if private network */
-      //   const gas = await Registrar.estimate.safeTransferFrom(
-      //     account,
-      //     to,
-      //     labelHash
-      //   )
-      //
-      //   overrides = {
-      //     ...overrides,
-      //     gasLimit: gas.toNumber() * 2
-      //   }
-      // }
-      return Registrar.safeTransferFrom(account, to, labelHash, overrides)
+      return Registrar["safeTransferFrom(address,address,uint256)"](account, to, labelHash, overrides)
     } catch (e) {
       console.log('Error calling transferOwner', e)
     }
