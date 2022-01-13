@@ -250,6 +250,9 @@ export default class Registrar {
       const nameArray = name.split('.')
       const labelHash = labelhash(nameArray[0])
       const account = await getAccount()
+      const permanentRegistrar = this.permanentRegistrar
+      const signer = await getSigner()
+      const Registrar = permanentRegistrar.connect(signer)
       return Registrar["safeTransferFrom(address,address,uint256)"](account, to, labelHash, overrides)
     } catch (e) {
       console.log('Error calling transferOwner', e)
