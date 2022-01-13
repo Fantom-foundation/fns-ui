@@ -322,7 +322,7 @@ export class FNS {
       topics: [namehash],
       fromBlock: startBlock
     })
-    const flattenedLogs = rawLogs.map((log) => log.values)
+    const flattenedLogs = rawLogs.map((log) => log.args)
     flattenedLogs.reverse()
     const logs = uniq(flattenedLogs, 'label')
     const labelhashes = logs.map((log) => log.label)
