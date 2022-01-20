@@ -54,18 +54,9 @@ function getLabelhash(label) {
 }
 
 const contracts = {
-  // 1: {
-  //   registry: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'
-  // },
-  // 3: {
-  //   registry: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'
-  // },
-  // 4: {
-  //   registry: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'
-  // },
-  // 5: {
-  //   registry: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'
-  // },
+  250: {
+    registry: '0x060d28cb93eCE6CeC3F47Db945CC54aa22151Ef8'
+  },
   4002: {
     registry: '0x7ab9cf80efb603938Ed723202c5Cbf80DD653217'
   },
