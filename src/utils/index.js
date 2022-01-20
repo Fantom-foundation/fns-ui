@@ -39,8 +39,14 @@ async function getEtherScanAddr() {
     case 4:
     case '4':
       return 'https://rinkeby.etherscan.io/'
+    case 250:
+    case '250':
+      return 'https://ftmscan.com/'
+    case 4200:
+    case '4200':
+      return 'https://testnet.ftmscan.com/'
     default:
-      return 'https://etherscan.io/'
+      return 'https://ftmscan.com/'
   }
 }
 

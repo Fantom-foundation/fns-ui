@@ -167,8 +167,9 @@ export function getNetworkProviderUrl(id) {
       return `https://rinkeby.infura.io/v3/90f210707d3c450f847659dc9a3436ea`
     case '5':
       return `https://goerli.infura.io/v3/90f210707d3c450f847659dc9a3436ea`
+    case '250':
+      return `https://rpcapi.fantom.network`
     default:
-      // return `https://api.s0.b.hmny.io`
       return `https://xapi.testnet.fantom.network/lachesis`
   }
 }
