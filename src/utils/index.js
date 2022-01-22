@@ -42,8 +42,8 @@ async function getEtherScanAddr() {
     case 250:
     case '250':
       return 'https://ftmscan.com/'
-    case 4200:
-    case '4200':
+    case 4002:
+    case '4002':
       return 'https://testnet.ftmscan.com/'
     default:
       return 'https://ftmscan.com/'

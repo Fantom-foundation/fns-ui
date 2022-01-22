@@ -168,9 +168,10 @@ export function getNetworkProviderUrl(id) {
     case '5':
       return `https://goerli.infura.io/v3/90f210707d3c450f847659dc9a3436ea`
     case '250':
+    case 250:
       return `https://rpc.ftm.tools/`
     default:
-      return `https://xapi.testnet.fantom.network/lachesis`
+      return `https://rpc.testnet.fantom.network/`
   }
 }
 
